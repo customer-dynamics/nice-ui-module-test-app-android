@@ -22,21 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- This should not be necessary. Cannot install multiple apps using UI module? -->
-        <!-- Error running 'app'
-            The application could not be installed: INSTALL_FAILED_CONFLICTING_PROVIDER Installation failed due to: 'INSTALL_FAILED_CONFLICTING_PROVIDER: Scanning Failed.: Can't install because provider name com.nice.cxonechat.fileprovider (in package com.example.uimodule) is already used by com.nice.cxonechat.sample'
-            List of apks:
-            [0] '/Users/tylerhendrickson/Developer/nice/testing/UI Module/app/build/intermediates/apk/debug/app-debug.apk'-->
-<!--        <provider-->
-<!--            android:name="com.nice.cxonechat.ui.storage.TemporaryFileProvider"-->
-<!--            android:authorities="com.example.uimodule.fileprovider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/tmp_file_path" />-->
-<!--        </provider>-->
     </application>
 
 </manifest>
