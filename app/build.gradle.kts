@@ -58,7 +58,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // NICE CXone Chat SDK dependencies
-    implementation(libs.logger)
     implementation(libs.logger.android)
     implementation(libs.chat.sdk.core)
     implementation(libs.chat.sdk.ui)
