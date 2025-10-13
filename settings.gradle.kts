@@ -41,6 +41,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "UI Module"
+rootProject.name = "SDK Test"
 include(":app")
- 
