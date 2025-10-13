@@ -1,4 +1,4 @@
-package com.example.uimodule.ui.theme
+package com.customerdynamics.sdktest.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

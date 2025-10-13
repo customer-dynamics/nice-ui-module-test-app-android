@@ -1,4 +1,4 @@
-package com.example.uimodule
+package com.customerdynamics.sdktest
 
 import android.app.Activity
 import android.content.Context

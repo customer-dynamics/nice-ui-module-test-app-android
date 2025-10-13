@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.uimodule"
+    namespace = "com.customerdynamics.sdktest"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.uimodule"
+        applicationId = "com.customerdynamics.sdktest"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
