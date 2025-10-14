@@ -20,7 +20,7 @@ object ChatManager {
             SocketFactoryConfiguration.create(
                 environment = CXoneEnvironment.NA1.value,
                 brandId = 1390,
-                channelId = "chat_955c2f5e-5cc1-4131-92ed-6a6aa0878b00\n"
+                channelId = "chat_955c2f5e-5cc1-4131-92ed-6a6aa0878b00"
             )
         )
         chatInstanceProvider.prepare(context)
