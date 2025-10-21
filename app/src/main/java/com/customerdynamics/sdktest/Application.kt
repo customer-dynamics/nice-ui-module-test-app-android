@@ -37,14 +37,14 @@ class Application : Application() {
             modules(
                 module {
                     single<Logger> {
-                        LoggerAndroid("SampleApp")
+                        LoggerAndroid("SDKTest")
                     }
                 }
             )
             includes(
                 chatUiModule(
                     logger = ProxyLogger(
-                        LoggerAndroid("CXoneChatUi")
+                        LoggerAndroid("SDKTest")
                     ),
                     customerFieldsProvider = customerCustomFieldsProvider,
                     contactFieldsProvider = contactCustomFieldsProvider
