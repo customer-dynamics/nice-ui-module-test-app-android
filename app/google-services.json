@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "611525637655",
+    "project_id": "cxone-sdk-test",
+    "storage_bucket": "cxone-sdk-test.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611525637655:android:31e940e4a3283ae3ef8e52",
+        "android_client_info": {
+          "package_name": "com.customerdynamics.sdktest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANoKBDjfysEkOhL8C1Bo6hMkn3Gg5VYg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

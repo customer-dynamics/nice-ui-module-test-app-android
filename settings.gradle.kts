@@ -23,10 +23,17 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
+        google() {
+            content {
+                includeGroupByRegex("com.android.*")
+                includeGroupByRegex("androidx.*")
+                includeGroup("android.arch.lifecycle")
+                includeGroup("android.arch.core")
+                includeGroupByRegex("com.google.*")
+            }
+        }
         mavenCentral()
         maven {
             name = "github-nice-devone-cxone-mobile"

@@ -2,6 +2,8 @@ package com.customerdynamics.sdktest
 
 import android.app.Activity
 import android.content.Context
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.nice.cxonechat.ChatInstanceProvider
 import com.nice.cxonechat.SocketFactoryConfiguration
 import com.nice.cxonechat.enums.CXoneEnvironment
@@ -26,7 +28,10 @@ object ChatManager {
             ),
             logger = ProxyLogger(
                 LoggerAndroid("SDKTest"),
-            )
+            ),
+            deviceTokenProvider = { setToken ->
+                Firebase.messaging.token.addOnSuccessListener(setToken)
+            },
         )
         chatInstanceProvider.prepare(context)
 
