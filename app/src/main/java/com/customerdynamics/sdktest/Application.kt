@@ -21,16 +21,15 @@ class Application : Application() {
     }
 
     private fun startDi() {
+        // You can set custom fields right away to be used when starting a chat:
         val customerCustomFieldsProvider = UiCustomFieldsProvider {
             mapOf(
-                "p1" to "something"
+                "p1" to "some_value"
             )
         }
-
         val contactCustomFieldsProvider = UiCustomFieldsProvider {
             mapOf(
-                "location" to "San Francisco",
-                "fname" to "John",
+                "batman" to "yes",
             )
         }
 
