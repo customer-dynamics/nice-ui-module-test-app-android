@@ -73,7 +73,10 @@ object ChatManager {
                         return@get
                     }
                     val messageText = latestMessage.text
-                    val url = "https://ahoylink.com/8H0EJprOJ0" // Parse this instead of hardcoding in real use case
+                    val url = Regex("(https?://\\S+)").find(messageText)?.value ?: run {
+                        Log.d("LOG", "No URL found in message text: $messageText")
+                        return@get
+                    }
 
                     // Open a web browser popup with the URL found in the message text:
                     if (showingSurvey) {
@@ -88,22 +91,6 @@ object ChatManager {
                 }
                 return@threads
             }
-
-//            val firstThread = threadsList.firstOrNull() ?: run {
-//                if (!threadCreated) {
-//                    // Create the thread manually, in order to set the contact custom fields on it:
-//                    Log.d("LOG", "No existing threads found. Creating a thread.")
-//                    try {
-//                        chatThreadsHandler.create(mapOf(
-//                            "p1" to "another_value",
-//                        ), )
-//                    } catch (error: Exception) {
-//                        Log.e("LOG", "Error creating thread: ${error.message}")
-//                    }
-//                    threadCreated = true
-//                }
-//                return@threads
-//            }
         }
 
         ChatActivity.startChat(activity)
