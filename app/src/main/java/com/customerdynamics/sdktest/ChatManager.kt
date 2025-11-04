@@ -12,11 +12,16 @@ import com.nice.cxonechat.enums.CXoneEnvironment
 import com.nice.cxonechat.log.LoggerAndroid
 import com.nice.cxonechat.log.ProxyLogger
 import com.nice.cxonechat.ui.screen.ChatActivity
+import androidx.core.net.toUri
+import androidx.browser.customtabs.CustomTabsIntent
+import com.nice.cxonechat.message.Message
 
 
 object ChatManager {
     private var isReady = false
     private var cancellableThreadsCallback: Cancellable? = null
+    private var cancellableThreadCallback: Cancellable? = null
+    private var showingSurvey = false
 
     fun prepareIfNeeded(context: Context) {
         if (isReady) {
@@ -51,20 +56,54 @@ object ChatManager {
             "phone_number" to "+1234567890",
         ))
 
-        // For contact custom fields, you need to use an existing thread handler:
         val chatThreadsHandler = chat.threads()
         cancellableThreadsCallback = chatThreadsHandler.threads { threadsList ->
             Log.d("LOG", "Current chat threads: $threadsList")
-            val firstThread = threadsList.firstOrNull() ?: run {
-                // Thread might not be created yet; keep listening
-                Log.d("LOG", "No existing threads found.")
+
+            if (threadsList.isNotEmpty()) {
+                val existingThread = threadsList.first()
+                val chatThreadHandler = chatThreadsHandler.thread(existingThread)
+
+                cancellableThreadCallback = chatThreadHandler.get { chatThread ->
+                    // Get the last message in the thread.
+                    val latestMessage = chatThread.messages.lastOrNull() as Message.Text ?: return@get
+
+                    // Parse the URL from text if it's from a survey user.
+                    if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
+                        return@get
+                    }
+                    val messageText = latestMessage.text
+                    val url = "https://ahoylink.com/8H0EJprOJ0" // Parse this instead of hardcoding in real use case
+
+                    // Open a web browser popup with the URL found in the message text:
+                    if (showingSurvey) {
+                        return@get
+                    }
+                    showingSurvey = true
+                    Log.d("LOG", "Opening survey URL: $messageText")
+                    val customTabsIntent = CustomTabsIntent.Builder()
+                        .setShowTitle(true)
+                        .build()
+                    customTabsIntent.launchUrl(activity, url.toUri())
+                }
                 return@threads
             }
-            val firstThreadHandler = chatThreadsHandler.thread(firstThread)
-            Log.d("LOG", "Adding custom fields to first thread: $firstThread")
-            firstThreadHandler.customFields().add(mapOf(
-                "p1" to "another_value",
-            ))
+
+//            val firstThread = threadsList.firstOrNull() ?: run {
+//                if (!threadCreated) {
+//                    // Create the thread manually, in order to set the contact custom fields on it:
+//                    Log.d("LOG", "No existing threads found. Creating a thread.")
+//                    try {
+//                        chatThreadsHandler.create(mapOf(
+//                            "p1" to "another_value",
+//                        ), )
+//                    } catch (error: Exception) {
+//                        Log.e("LOG", "Error creating thread: ${error.message}")
+//                    }
+//                    threadCreated = true
+//                }
+//                return@threads
+//            }
         }
 
         ChatActivity.startChat(activity)
