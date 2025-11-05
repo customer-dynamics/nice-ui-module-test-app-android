@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SDK Test</string>
+
+    <!-- Provide your own text for UI module. -->
+    <string name="no_agent_assigned">Connecting...</string>
+    <string name="change_details_label">Change questionnaire</string>
+
 </resources>
