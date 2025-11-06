@@ -3,8 +3,6 @@ package com.customerdynamics.sdktest
 import android.app.Activity
 import android.content.Context
 import android.util.Log
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
 import com.nice.cxonechat.Cancellable
 import com.nice.cxonechat.ChatInstanceProvider
 import com.nice.cxonechat.SocketFactoryConfiguration
@@ -14,6 +12,8 @@ import com.nice.cxonechat.log.ProxyLogger
 import com.nice.cxonechat.ui.screen.ChatActivity
 import androidx.core.net.toUri
 import androidx.browser.customtabs.CustomTabsIntent
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.nice.cxonechat.message.Message
 
 
@@ -66,7 +66,7 @@ object ChatManager {
 
                 cancellableThreadCallback = chatThreadHandler.get { chatThread ->
                     // Get the last message in the thread.
-                    val latestMessage = chatThread.messages.lastOrNull() as Message.Text ?: return@get
+                    val latestMessage = chatThread.messages.lastOrNull() as Message.Text
 
                     // Parse the URL from text if it's from a survey user.
                     if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
