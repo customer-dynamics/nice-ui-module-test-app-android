@@ -2,6 +2,7 @@ package com.customerdynamics.sdktest
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.nice.cxonechat.Cancellable
 import com.nice.cxonechat.ChatInstanceProvider
@@ -12,9 +13,12 @@ import com.nice.cxonechat.log.ProxyLogger
 import com.nice.cxonechat.ui.screen.ChatActivity
 import androidx.core.net.toUri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.ui.graphics.Color
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.nice.cxonechat.message.Message
+import com.nice.cxonechat.ui.composable.theme.ChatThemeDetails
+import com.nice.cxonechat.ui.composable.theme.ThemeColorTokens
 
 
 object ChatManager {
@@ -92,6 +96,19 @@ object ChatManager {
                 return@threads
             }
         }
+
+        // Currently broken in 3.1.0
+//        ChatThemeDetails.lightTokens.background = ThemeColorTokens.Background(
+//            default = Color(0xFFF6F6F6),
+//            inverse = Color(0xFF222222),
+//            surface = ThemeColorTokens.Background.Surface(
+//                default = Color.White,
+//                variant = Color(0xFFE0E0E0),
+//                container = Color(0xFFFAFAFA),
+//                subtle = Color(0xFFF0F0F0),
+//                emphasis = Color(0xFF007AFF)
+//            )
+//        )
 
         ChatActivity.startChat(activity)
     }
