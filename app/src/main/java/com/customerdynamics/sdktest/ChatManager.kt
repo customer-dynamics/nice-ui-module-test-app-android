@@ -50,6 +50,7 @@ object ChatManager {
     }
 
     fun startChat(activity: Activity) {
+        cleanUp()
         val chat = ChatInstanceProvider.get().chat ?: run {
             Log.d("LOG", "No chat instance available for custom fields")
             return
@@ -113,5 +114,15 @@ object ChatManager {
         ContactCustomFieldsProvider.accountNumber = "123456"
         ContactCustomFieldsProvider.email = "test@test.com"
         ChatActivity.startChat(activity)
+    }
+
+    fun cleanUp() {
+        cancellableThreadsCallback?.cancel()
+        cancellableThreadsCallback = null
+
+        cancellableThreadCallback?.cancel()
+        cancellableThreadCallback = null
+
+        showingSurvey = false
     }
 }
