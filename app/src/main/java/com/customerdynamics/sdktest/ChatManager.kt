@@ -110,6 +110,8 @@ object ChatManager {
 //            )
 //        )
 
+        ContactCustomFieldsProvider.accountNumber = "123456"
+        ContactCustomFieldsProvider.email = "test@test.com"
         ChatActivity.startChat(activity)
     }
 }

@@ -27,11 +27,6 @@ class Application : Application() {
                 "p1" to "some_value"
             )
         }
-        val contactCustomFieldsProvider = UiCustomFieldsProvider {
-            mapOf(
-                "batman" to "yes",
-            )
-        }
 
         startKoin {
             androidContext(this@Application)
@@ -48,7 +43,7 @@ class Application : Application() {
                         LoggerAndroid("SDKTest")
                     ),
                     customerFieldsProvider = customerCustomFieldsProvider,
-                    contactFieldsProvider = contactCustomFieldsProvider
+                    contactFieldsProvider = ContactCustomFieldsProvider
                 )
             )
         }
