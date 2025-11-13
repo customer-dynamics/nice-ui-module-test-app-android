@@ -71,7 +71,10 @@ object ChatManager {
 
                 cancellableThreadCallback = chatThreadHandler.get { chatThread ->
                     // Get the last message in the thread.
-                    val latestMessage = chatThread.messages.lastOrNull() as Message.Text
+                    val latestMessage = chatThread.messages.lastOrNull() as? Message.Text ?: run {
+                        Log.d("LOG", "No need to handle TORM messages")
+                        return@get
+                    }
 
                     // Parse the URL from text if it's from a survey user.
                     if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
