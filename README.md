@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a testbed project for demoing and testing various features of the NICE CXone Chat UI Module, a drop-in chat interface for Android applications. The project is currently configured for a live chat chat channel, but the implementation is nearly the same for asynchronous messaging channels.
+This is a testbed project for demoing and testing various features of the [NICE CXone Chat UI Module](https://github.com/nice-devone/nice-cxone-mobile-sdk-android?tab=readme-ov-file#cxone-chat-ui), a drop-in chat interface for Android applications. The project is currently configured for a live chat chat channel, but the implementation is nearly the same for asynchronous messaging channels.
 
 ## Items of Interest
 
