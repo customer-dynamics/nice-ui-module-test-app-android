@@ -31,11 +31,11 @@ internal class PushListenerService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
         // Minimal local notification for any incoming FCM (data-only or notification+data)
         val title = remoteMessage.notification?.title
-            ?: remoteMessage.data["title"]
-            ?: "New message"
+            ?: remoteMessage.data["pinpoint.notification.title"]
+            ?: "TITLE"
         val body = remoteMessage.notification?.body
-            ?: remoteMessage.data["body"]
-            ?: "You have a new notification"
+            ?: remoteMessage.data["pinpoint.notification.body"]
+            ?: "MESSAGE"
 
         val channelId = "chat_default"
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
