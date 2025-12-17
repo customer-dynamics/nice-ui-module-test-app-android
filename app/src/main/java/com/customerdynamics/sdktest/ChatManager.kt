@@ -51,16 +51,17 @@ object ChatManager {
 
     fun startChat(activity: Activity) {
         cleanUp()
+
+        // You can set customer custom fields like this:
         val chat = ChatInstanceProvider.get().chat ?: run {
             Log.d("LOG", "No chat instance available for custom fields")
             return
         }
-
-        // You can set customer custom fields:
         chat.customFields().add(mapOf(
             "phone_number" to "+1234567890",
         ))
 
+        // Custom behavior to display the satisfaction survey automatically.
         val chatThreadsHandler = chat.threads()
         cancellableThreadsCallback = chatThreadsHandler.threads { threadsList ->
             Log.d("LOG", "Current chat threads: $threadsList")
@@ -101,19 +102,19 @@ object ChatManager {
             }
         }
 
-        // Currently broken in 3.1.0
-//        ChatThemeDetails.lightTokens.background = ThemeColorTokens.Background(
-//            default = Color(0xFFF6F6F6),
-//            inverse = Color(0xFF222222),
-//            surface = ThemeColorTokens.Background.Surface(
-//                default = Color.White,
-//                variant = Color(0xFFE0E0E0),
-//                container = Color(0xFFFAFAFA),
-//                subtle = Color(0xFFF0F0F0),
-//                emphasis = Color(0xFF007AFF)
-//            )
+        // Set custom colors for the interface
+//        ChatThemeDetails.lightTokens.brand = ThemeColorTokens.Brand(
+//            primary = Color(0xff1ab844),
+//            onPrimary = Color.Black,
+//            Color.Black,
+//            Color.Black,
+//            Color.Black,
+//            Color.Black,
+//            Color.Black,
+//            Color.Black,
 //        )
 
+        // Set custom fields.
         ContactCustomFieldsProvider.accountNumber = "123456"
         ContactCustomFieldsProvider.email = "test@test.com"
         ChatActivity.startChat(activity)
