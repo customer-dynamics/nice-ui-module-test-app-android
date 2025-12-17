@@ -2,7 +2,6 @@ package com.customerdynamics.sdktest
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import com.nice.cxonechat.Cancellable
 import com.nice.cxonechat.ChatInstanceProvider
@@ -13,12 +12,9 @@ import com.nice.cxonechat.log.ProxyLogger
 import com.nice.cxonechat.ui.screen.ChatActivity
 import androidx.core.net.toUri
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.ui.graphics.Color
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.nice.cxonechat.message.Message
-import com.nice.cxonechat.ui.composable.theme.ChatThemeDetails
-import com.nice.cxonechat.ui.composable.theme.ThemeColorTokens
 
 
 object ChatManager {
