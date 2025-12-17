@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.nice.cxonechat.ChatInstanceProvider
 import com.customerdynamics.sdktest.MainActivity
+import androidx.core.net.toUri
 
 internal class PushListenerService : FirebaseMessagingService() {
 
@@ -48,9 +49,18 @@ internal class PushListenerService : FirebaseMessagingService() {
             nm.createNotificationChannel(channel)
         }
 
-        val intent = Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        // If there's a deep link in the notification, handle it.
+        val deepLinkUri = remoteMessage.data["pinpoint.deeplink"] ?: ""
+        val intent = if (deepLinkUri.isNotEmpty()) {
+            Log.d("LOG", "Received deep link: $deepLinkUri")
+            Intent(Intent.ACTION_VIEW, deepLinkUri.toUri())
+        } else {
+            Log.d("LOG", "No deep link received. Navigating to MainActivity.")
+            Intent(this, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
         }
+
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
