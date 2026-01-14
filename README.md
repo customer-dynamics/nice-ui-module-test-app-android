@@ -4,6 +4,15 @@
 
 This is a testbed project for demoing and testing various features of the [NICE CXone Chat UI Module](https://github.com/nice-devone/nice-cxone-mobile-sdk-android?tab=readme-ov-file#cxone-chat-ui), a drop-in chat interface for Android applications. The project is currently configured for a live chat chat channel, but the implementation is nearly the same for asynchronous messaging channels.
 
+## Running the Project
+
+The NICE CXone Android SDK and UI module are published through GitHub Packages. As such, you need to authenticate with GitHub by providing your username and a personal access token that can access GitHub Packages in the `local.properties` file:
+
+```properties
+github.user=your-github-username
+github.key=your-github-personal-access-token
+```
+
 ## Items of Interest
 
 ### Application.kt
