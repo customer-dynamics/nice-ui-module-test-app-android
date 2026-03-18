@@ -14,6 +14,7 @@ import androidx.core.net.toUri
 import androidx.browser.customtabs.CustomTabsIntent
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
+import com.nice.cxonechat.UserName
 import com.nice.cxonechat.message.Message
 
 
@@ -34,6 +35,10 @@ object ChatManager {
                 brandId = 1390,
                 channelId = "chat_955c2f5e-5cc1-4131-92ed-6a6aa0878b00",
             ),
+            userName = UserName.create(
+                firstName = "Guest",
+                lastName = "User",
+            ),
             logger = ProxyLogger(
                 LoggerAndroid("SDKTest"),
             ),
@@ -43,6 +48,61 @@ object ChatManager {
         )
         chatInstanceProvider.prepare(context)
         isReady = true
+    }
+
+    fun signIn(context: Context) {
+        // Do your login here and get the account data.
+
+        // Remove the existing customer identity and custom fields.
+        ChatInstanceProvider.get().signOut()
+
+        // Set the customer identity from the account data.
+        val chatInstanceProvider = ChatInstanceProvider.create(
+            SocketFactoryConfiguration.create(
+                environment = CXoneEnvironment.NA1.value,
+                brandId = 1390,
+                channelId = "chat_955c2f5e-5cc1-4131-92ed-6a6aa0878b00",
+            ),
+            userName = UserName.create(
+                firstName = "SDK",
+                lastName = "Tester",
+            ),
+            logger = ProxyLogger(
+                LoggerAndroid("SDKTest"),
+            ),
+            deviceTokenProvider = { setToken ->
+                Firebase.messaging.token.addOnSuccessListener(setToken)
+            },
+            customerId = "some-unique-identifier-for-the-account"
+        )
+
+        // Re-prepare the SDK.
+        chatInstanceProvider.prepare(context)
+    }
+
+    fun signOut(context: Context) {
+        // Remove the existing customer identity and custom fields.
+        ChatInstanceProvider.get().signOut()
+
+        // Re-prepare with new identity (guest).
+        val chatInstanceProvider = ChatInstanceProvider.create(
+            SocketFactoryConfiguration.create(
+                environment = CXoneEnvironment.NA1.value,
+                brandId = 1390,
+                channelId = "chat_955c2f5e-5cc1-4131-92ed-6a6aa0878b00",
+            ),
+            userName = UserName.create(
+                firstName = "Guest",
+                lastName = "User",
+            ),
+            logger = ProxyLogger(
+                LoggerAndroid("SDKTest"),
+            ),
+            deviceTokenProvider = { setToken ->
+                Firebase.messaging.token.addOnSuccessListener(setToken)
+            },
+        )
+        chatInstanceProvider.prepare(context)
     }
 
     fun startChat(activity: Activity) {
