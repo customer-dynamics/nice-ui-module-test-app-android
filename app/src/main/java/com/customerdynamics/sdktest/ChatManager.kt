@@ -118,45 +118,45 @@ object ChatManager {
         ))
 
         // Custom behavior to display the satisfaction survey automatically.
-        val chatThreadsHandler = chat.threads()
-        cancellableThreadsCallback = chatThreadsHandler.threads { threadsList ->
-            Log.d("LOG", "Current chat threads: $threadsList")
-
-            if (threadsList.isNotEmpty()) {
-                val existingThread = threadsList.first()
-                val chatThreadHandler = chatThreadsHandler.thread(existingThread)
-
-                cancellableThreadCallback = chatThreadHandler.get { chatThread ->
-                    // Get the last message in the thread.
-                    val latestMessage = chatThread.messages.lastOrNull() as? Message.Text ?: run {
-                        Log.d("LOG", "No need to handle TORM messages")
-                        return@get
-                    }
-
-                    // Parse the URL from text if it's from a survey user.
-                    if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
-                        return@get
-                    }
-                    val messageText = latestMessage.text
-                    val url = Regex("(https?://\\S+)").find(messageText)?.value ?: run {
-                        Log.d("LOG", "No URL found in message text: $messageText")
-                        return@get
-                    }
-
-                    // Open a web browser popup with the URL found in the message text:
-                    if (showingSurvey) {
-                        return@get
-                    }
-                    showingSurvey = true
-                    Log.d("LOG", "Opening survey URL: $messageText")
-                    val customTabsIntent = CustomTabsIntent.Builder()
-                        .setShowTitle(true)
-                        .build()
-                    customTabsIntent.launchUrl(activity, url.toUri())
-                }
-                return@threads
-            }
-        }
+//        val chatThreadsHandler = chat.threads()
+//        cancellableThreadsCallback = chatThreadsHandler.threads { threadsList ->
+//            Log.d("LOG", "Current chat threads: $threadsList")
+//
+//            if (threadsList.isNotEmpty()) {
+//                val existingThread = threadsList.first()
+//                val chatThreadHandler = chatThreadsHandler.thread(existingThread)
+//
+//                cancellableThreadCallback = chatThreadHandler.get { chatThread ->
+//                    // Get the last message in the thread.
+//                    val latestMessage = chatThread.messages.lastOrNull() as? Message.Text ?: run {
+//                        Log.d("LOG", "No need to handle TORM messages")
+//                        return@get
+//                    }
+//
+//                    // Parse the URL from text if it's from a survey user.
+//                    if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
+//                        return@get
+//                    }
+//                    val messageText = latestMessage.text
+//                    val url = Regex("(https?://\\S+)").find(messageText)?.value ?: run {
+//                        Log.d("LOG", "No URL found in message text: $messageText")
+//                        return@get
+//                    }
+//
+//                    // Open a web browser popup with the URL found in the message text:
+//                    if (showingSurvey) {
+//                        return@get
+//                    }
+//                    showingSurvey = true
+//                    Log.d("LOG", "Opening survey URL: $messageText")
+//                    val customTabsIntent = CustomTabsIntent.Builder()
+//                        .setShowTitle(true)
+//                        .build()
+//                    customTabsIntent.launchUrl(activity, url.toUri())
+//                }
+//                return@threads
+//            }
+//        }
 
         // Set custom colors for the interface
 //        ChatThemeDetails.lightTokens.brand = ThemeColorTokens.Brand(
