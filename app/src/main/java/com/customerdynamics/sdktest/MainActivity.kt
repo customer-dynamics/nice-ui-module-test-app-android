@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -22,10 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.customerdynamics.sdktest.ui.theme.UIModuleTheme
 import android.content.pm.PackageManager
 import android.Manifest
 import android.os.Build
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.core.content.ContextCompat
 
 class MainActivity : ComponentActivity() {
@@ -76,6 +81,7 @@ class MainActivity : ComponentActivity() {
 fun ChatScreen(initialPrepared: Boolean = false) {
     var isPrepared by remember { mutableStateOf(initialPrepared) }
     val context = LocalContext.current
+    var isSignedIn by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (!isPrepared) {
@@ -90,18 +96,45 @@ fun ChatScreen(initialPrepared: Boolean = false) {
         contentAlignment = Alignment.Center
     ) {
         if (isPrepared) {
-            Button(onClick = {
-                val activity = context as? Activity
-                if (activity != null) {
-                    ChatManager.startChat(activity)
-                } else {
-                    println("No activity to start chat from.")
-                }
-            }) {
-                Text(
-                    text = "Start Chat"
-                )
+            Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                Button(onClick = {
+                    val activity = context as? Activity
+                    if (activity != null) {
+                        ChatManager.startChat(activity)
+                    } else {
+                        println("No activity to start chat from.")
+                    }
+                }) {
+                    Text(
+                        text = "Start Chat"
+                    )
 
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(
+                    onClick = {
+                        ChatManager.signIn(context)
+                        isSignedIn = true
+                    },
+                    enabled = !isSignedIn,
+                    modifier = Modifier.padding(top = 16.dp)
+                ) {
+                    Text(
+                        text = "Sign In"
+                    )
+                }
+                Button(
+                    onClick = {
+                        ChatManager.signOut(context)
+                        isSignedIn = false
+                    },
+                    enabled = isSignedIn
+                ) {
+                    Text(
+                        text = "Sign Out"
+                    )
+
+                }
             }
         } else {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
