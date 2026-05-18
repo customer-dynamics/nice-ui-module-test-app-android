@@ -16,6 +16,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.nice.cxonechat.UserName
 import com.nice.cxonechat.message.Message
+import com.nice.cxonechat.thread.ChatThreadState
+import java.util.UUID
 
 
 object ChatManager {
@@ -23,6 +25,7 @@ object ChatManager {
     private var cancellableThreadsCallback: Cancellable? = null
     private var cancellableThreadCallback: Cancellable? = null
     private var showingSurvey = false
+    private var lastThreadId: UUID? = null
 
     fun prepareIfNeeded(context: Context) {
         if (isReady) {
@@ -118,45 +121,66 @@ object ChatManager {
         ))
 
         // Custom behavior to display the satisfaction survey automatically.
-//        val chatThreadsHandler = chat.threads()
-//        cancellableThreadsCallback = chatThreadsHandler.threads { threadsList ->
-//            Log.d("LOG", "Current chat threads: $threadsList")
-//
-//            if (threadsList.isNotEmpty()) {
-//                val existingThread = threadsList.first()
-//                val chatThreadHandler = chatThreadsHandler.thread(existingThread)
-//
-//                cancellableThreadCallback = chatThreadHandler.get { chatThread ->
-//                    // Get the last message in the thread.
-//                    val latestMessage = chatThread.messages.lastOrNull() as? Message.Text ?: run {
-//                        Log.d("LOG", "No need to handle TORM messages")
-//                        return@get
-//                    }
-//
-//                    // Parse the URL from text if it's from a survey user.
-//                    if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
-//                        return@get
-//                    }
-//                    val messageText = latestMessage.text
-//                    val url = Regex("(https?://\\S+)").find(messageText)?.value ?: run {
-//                        Log.d("LOG", "No URL found in message text: $messageText")
-//                        return@get
-//                    }
-//
-//                    // Open a web browser popup with the URL found in the message text:
-//                    if (showingSurvey) {
-//                        return@get
-//                    }
-//                    showingSurvey = true
-//                    Log.d("LOG", "Opening survey URL: $messageText")
-//                    val customTabsIntent = CustomTabsIntent.Builder()
-//                        .setShowTitle(true)
-//                        .build()
-//                    customTabsIntent.launchUrl(activity, url.toUri())
-//                }
-//                return@threads
-//            }
-//        }
+        val chatThreadsHandler = chat.threads()
+        cancellableThreadsCallback = chatThreadsHandler.threads { threadsList ->
+            Log.d("LOG", "Current chat threads: $threadsList")
+
+            if (threadsList.isNotEmpty()) {
+                val existingThread = threadsList.first()
+                val chatThreadHandler = chatThreadsHandler.thread(existingThread)
+
+                // Reset showingSurvey flag and clean up, if the thread has changed.
+                if (existingThread.id != lastThreadId) {
+                    Log.d("LOG", "Thread has changed from $lastThreadId to ${existingThread.id}, resetting showingSurvey flag.")
+                    showingSurvey = false
+                    cancellableThreadsCallback?.cancel()
+                    cancellableThreadsCallback = null
+
+                    cancellableThreadCallback?.cancel()
+                    cancellableThreadCallback = null
+                }
+                lastThreadId = existingThread.id
+
+                cancellableThreadCallback = chatThreadHandler.get { chatThread ->
+                    Log.d("LOG", "Got new chat thread details: $chatThread")
+                    if (chatThread.threadState === ChatThreadState.Closed) {
+                        // This seems to be necessary because old callbacks can still be triggered for closed threads.
+                        Log.d("LOG", "Chat thread is closed, no need to check for survey.")
+                        return@get
+                    }
+
+                    // Get the last message in the thread.
+                    val latestMessage = chatThread.messages.lastOrNull() as? Message.Text ?: run {
+                        Log.d("LOG", "No need to handle TORM messages")
+                        return@get
+                    }
+
+                    // Parse the URL from text if it's from a survey user.
+                    if (latestMessage.author?.firstName != "Satisfaction Survey Service") {
+                        Log.d("LOG", "Latest message is not from survey user: ${latestMessage.author}")
+                        return@get
+                    }
+                    val messageText = latestMessage.text
+                    val url = Regex("(https?://\\S+)").find(messageText)?.value ?: run {
+                        Log.d("LOG", "No URL found in message text: $messageText")
+                        return@get
+                    }
+
+                    // Open a web browser popup with the URL found in the message text:
+                    if (showingSurvey) {
+                        Log.d("LOG", "Survey is already showing, not opening another one.")
+                        return@get
+                    }
+                    showingSurvey = true
+                    Log.d("LOG", "Opening survey URL: $messageText")
+                    val customTabsIntent = CustomTabsIntent.Builder()
+                        .setShowTitle(true)
+                        .build()
+                    customTabsIntent.launchUrl(activity, url.toUri())
+                }
+                return@threads
+            }
+        }
 
         // Set custom colors for the interface
 //        ChatThemeDetails.lightTokens.brand = ThemeColorTokens.Brand(
